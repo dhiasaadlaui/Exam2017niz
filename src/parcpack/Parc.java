@@ -33,19 +33,17 @@ public class Parc {
 
         parc.putIfAbsent(a, new ArrayList<>());
     }
-  public void jouerAttraction(Attraction a, Enfant e) {
 
-        if((e.getAge()>=a.getAge_min())&&(e.getTicket()>=a.getNbr_ticket())){
+    public void jouerAttraction(Attraction a, Enfant e) {
+
+        if ((e.getAge() >= a.getAge_min()) && (e.getTicket() >= a.getNbr_ticket())) {
             ajouterAttraction(a);
             parc.get(e).add(e);
-            e.setTicket(e.getTicket()-a.getNbr_ticket());
+            e.setTicket(e.getTicket() - a.getNbr_ticket());
         }
-        
-        
+
     }
 
-    
-    
     public Enfant getEnfantPlusJeune(Attraction a) {
 
         return parc
@@ -85,13 +83,13 @@ public class Parc {
                 .get().getKey();
     }
 
-    
-
     public List<String> getNomEnfants() {
 
-         return parc.values().stream()
-                .flatMap(e->e.stream())              
-                .map(Enfant::getNom).collect(Collectors.toList());
+        return parc.values().stream()
+                .flatMap(e -> e.stream())
+                .distinct()
+                .map(Enfant::getNom)
+                .collect(Collectors.toList());
 
     }
 
@@ -116,16 +114,16 @@ public class Parc {
     }
 
     public Boolean isEnfantJouePlusieursAttraction() {
-        boolean res= false;
+        boolean res = false;
         for (Map.Entry<Attraction, List<Enfant>> entry : parc.entrySet()) {
-          res =  parc.values()
-                  .stream()
-                  .filter(e -> !e.equals(entry.getValue()))
-                  .anyMatch(e->Collections.disjoint(entry.getValue(), e));
+            res = parc.values()
+                    .stream()
+                    .filter(e -> !e.equals(entry.getValue()))
+                    .anyMatch(e -> Collections.disjoint(entry.getValue(), e));
             if (res) {
                 return res;
             }
-                  
+
         }
 
         return res;
